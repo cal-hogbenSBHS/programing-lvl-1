@@ -1,6 +1,7 @@
 <!doctype html>
+
 <body>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <canvas id="gameCanvas" width="1000" height="800"></canvas>
     <script>
         var canvas, canvasContext;
 
@@ -9,17 +10,34 @@
             canvasContext = canvas.getContext('2d');
 
             setInterval(mainloop, 1000 / 50);
+
         }
+
+   
+            var space = new Image();
+            space.src = 'images/space.png';
+
+            var playerXpos = 0;
+            var playerYpos = 0;
+            var PLAYER_SIZE = 20;
+            
         
         function mainloop() {
-            colorRect(0,0,canvas.width,canvas.height,'black'); // bg
-  
+            drawImgs(space, 0, 0, canvas.width, canvas.height);
+            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
+//            drawImgs(space, playerXpos, playerYpos, playerSize, playerSIZE);
+
         }
-        
-         function colorRect(x,y,w,h,c){
+
+        function drawImgs(src, x, y, w, h, ) {
+            canvasContext.drawImage(src, x, y, w, h, );
+
+        }
+
+        function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
-            canvasContext.fillRect(x,y,w,h);
+            canvasContext.fillRect(x, y, w, h);
         }
-    
+
     </script>
 </body>
