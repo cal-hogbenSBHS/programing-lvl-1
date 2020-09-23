@@ -11,33 +11,71 @@
 
             setInterval(mainloop, 1000 / 50);
 
+            document.addEventListener('keydown', keyPressed); //keyPressed = made function
+            document.addEventListener('keyup', keyReleased); //keyReleased = made function  
+
+
         }
 
-   
-            var space = new Image();
-            space.src = 'images/space.png';
 
-            var playerXpos = 0;
-            var playerYpos = 0;
-            var PLAYER_SIZE = 20;
-            
-        
+        var space = new Image();
+        space.src = 'images/space.png';
+
+        var playerXpos = 480;
+        var playerYpos = 700;
+        var PLAYER_SIZE = 40;
+
+        const RIGHT_KEY = 37;
+        var rightkeypressed = false;
+
+        const LEFT_KEY = 37;
+        var leftKeyPressed = false;
+
+        function keyPressed(evt) {
+
+            if (evt.keyCode == LEFT_KEY) {
+                leftKeyPressed = true;
+            }
+
+
+            if (evt.keyCode == RIGHT_KEY) {
+                rightkeypressed = true;
+            }
+        }
+
+        function keyReleased(evt) {
+            if (evt.keyCode == LEFT_KEY) {
+                leftKeyPressed = false;
+            }
+
+            if (evt.keyCode == RIGHT_KEY) {
+                rightkeypressed = false;
+            }
+        }
+
         function mainloop() {
             drawImgs(space, 0, 0, canvas.width, canvas.height);
             colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
-//            drawImgs(space, playerXpos, playerYpos, playerSize, playerSIZE);
+            //            drawImgs(space, playerXpos, playerYpos, playerSize, playerSIZE);
+            playerMove();
 
+        }
+
+        function playerMove() {
+            if (leftKeyPressed) {
+                playerXpos -= 10;
+            }
         }
 
         function drawImgs(src, x, y, w, h, ) {
             canvasContext.drawImage(src, x, y, w, h, );
-
         }
+        
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
         }
-
+        
     </script>
 </body>
