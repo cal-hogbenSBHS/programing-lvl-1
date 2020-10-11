@@ -24,20 +24,18 @@
         var playerXpos = 480;
         var playerYpos = 700;
         var PLAYER_SIZE = 40;
+        var xSpeed = 10;
 
-        const RIGHT_KEY = 37;
+        const RIGHT_KEY = 39;
         var rightkeypressed = false;
 
         const LEFT_KEY = 37;
         var leftKeyPressed = false;
 
         function keyPressed(evt) {
-
             if (evt.keyCode == LEFT_KEY) {
                 leftKeyPressed = true;
             }
-
-
             if (evt.keyCode == RIGHT_KEY) {
                 rightkeypressed = true;
             }
@@ -47,7 +45,6 @@
             if (evt.keyCode == LEFT_KEY) {
                 leftKeyPressed = false;
             }
-
             if (evt.keyCode == RIGHT_KEY) {
                 rightkeypressed = false;
             }
@@ -63,19 +60,23 @@
 
         function playerMove() {
             if (leftKeyPressed) {
-                playerXpos -= 10;
+                playerXpos -= xSpeed;
             }
+            if (rightkeypressed) {
+                playerXpos += xSpeed;
+            }
+
         }
 
         function drawImgs(src, x, y, w, h, ) {
             canvasContext.drawImage(src, x, y, w, h, );
         }
-        
+
 
         function colorRect(x, y, w, h, c) {
             canvasContext.fillStyle = c;
             canvasContext.fillRect(x, y, w, h);
         }
-        
+
     </script>
 </body>
