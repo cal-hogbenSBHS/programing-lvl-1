@@ -14,16 +14,20 @@
             document.addEventListener('keydown', keyPressed); //keyPressed = made function
             document.addEventListener('keyup', keyReleased); //keyReleased = made function  
 
-
         }
 
+        var userName = '';
 
+        while (userName == '' || userName == null) {
+            userName = prompt('what is your name?');
+        }
+        
         var space = new Image();
         space.src = 'images/space.png';
 
         var playerXpos = 480;
         var playerYpos = 700;
-        var PLAYER_SIZE = 40;
+        var PLAYER_SIZE = 70;
         var xSpeed = 10;
         var ySpeed = 20;
 
@@ -35,7 +39,7 @@
 
         const UP_KEY = 38;
         var upkeypressed = false;
-        
+
         const DOWN_KEY = 40;
         var downkeypressed = false;
 
@@ -54,56 +58,61 @@
 
             }
         }
-            function keyReleased(evt) {
-                if (evt.keyCode == LEFT_KEY) {
-                    leftKeyPressed = false;
-                }
-                if (evt.keyCode == RIGHT_KEY) {
-                    rightkeypressed = false;
-                }
-                if (evt.keyCode == UP_KEY) {
-                    upkeypressed = false;
-                }
-                if (evt.keyCode == DOWN_KEY) {
-                    downkeypressed = false;
-                }
+
+        function keyReleased(evt) {
+            if (evt.keyCode == LEFT_KEY) {
+                leftKeyPressed = false;
+            }
+            if (evt.keyCode == RIGHT_KEY) {
+                rightkeypressed = false;
+            }
+            if (evt.keyCode == UP_KEY) {
+                upkeypressed = false;
+            }
+            if (evt.keyCode == DOWN_KEY) {
+                downkeypressed = false;
+            }
+        }
+        
+            var player = new Image();
+            player.src = "images/ship 1.png";
+
+        function mainloop() {
+            drawImgs(space, 0, 0, canvas.width, canvas.height);
+//            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
+            //                colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red');
+            drawImgs(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE);
+            playerMove();
+
+
+        }
+
+        function playerMove() {
+            if (leftKeyPressed) {
+                playerXpos -= xSpeed;
+            }
+            if (rightkeypressed) {
+                playerXpos += xSpeed;
+            }
+            if (upkeypressed) {
+                playerYpos -= ySpeed;
+            }
+            if (downkeypressed) {
+                console.log('me')
+                playerYpos += ySpeed;
             }
 
-            function mainloop() {
-                drawImgs(space, 0, 0, canvas.width, canvas.height);
-                colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
-//                colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red');
-                //            drawImgs(space, playerXpos, playerYpos, playerSize, playerSIZE);
-                playerMove();
+        }
 
-            }
-
-            function playerMove() {
-                if (leftKeyPressed) {
-                    playerXpos -= xSpeed;
-                }
-                if (rightkeypressed) {
-                    playerXpos += xSpeed;
-                }
-                if (upkeypressed) {
-                    playerYpos -= ySpeed;
-                }
-                if (downkeypressed) {
-                    console.log('me')
-                    playerYpos += ySpeed;
-                }
-
-            }
-
-            function drawImgs(src, x, y, w, h, ) {
-                canvasContext.drawImage(src, x, y, w, h, );
-            }
+        function drawImgs(src, x, y, w, h, ) {
+            canvasContext.drawImage(src, x, y, w, h, );
+        }
 
 
-            function colorRect(x, y, w, h, c) {
-                canvasContext.fillStyle = c;
-                canvasContext.fillRect(x, y, w, h);
-            }
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+        }
 
     </script>
 </body>
