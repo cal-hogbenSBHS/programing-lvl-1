@@ -31,7 +31,7 @@
 
         var playerXpos = 480;
         var playerYpos = 700;
-        const PLAYER_SIZE = 70;
+        const PLAYER_SIZE = 50;
         var playerXSpeed = 15;
         var playerYSpeed = 15;
 
@@ -108,7 +108,7 @@
                 drawImgs(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE);
                 playerMove();
                 drawtext(10, 30, "score: " + score);
-                colorRect(enemyXpos, enemyYpos, ENEMY_SIZE, enemyXspeed, enemyYspeed, 'red'); //enemy
+                drawImgs(enemy ,enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, ); //enemy
 
                 enemyMove();
             } else {
