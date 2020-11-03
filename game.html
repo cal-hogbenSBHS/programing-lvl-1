@@ -14,22 +14,32 @@
             document.addEventListener('keydown', keyPressed); //keyPressed = made function
             document.addEventListener('keyup', keyReleased); //keyReleased = made function  
 
+
         }
+
 
         var userName = '';
 
         while (userName == '' || userName == null) {
             userName = prompt('what is your name?');
         }
-        
+
         var space = new Image();
         space.src = 'images/space.png';
 
+
+
         var playerXpos = 480;
         var playerYpos = 700;
-        var PLAYER_SIZE = 70;
-        var xSpeed = 10;
-        var ySpeed = 20;
+        const PLAYER_SIZE = 70;
+        var playerXSpeed = 15;
+        var playerYSpeed = 15;
+
+        var enemyXpos = 450;
+        var enemyYpos = 200;
+        const ENEMY_SIZE = 30;
+        var enemyXspeed = 10;
+        var enemyYspeed = 10;
 
         const RIGHT_KEY = 39;
         var rightkeypressed = false;
@@ -58,6 +68,13 @@
 
             }
         }
+        var score = 0;
+
+        function drawtext(x, y, text) {
+            canvasContext.font = "30px Arial";
+            canvasContext.fillStyle = "#FF0000";
+            canvasContext.fillText(text, x, y);
+        }
 
         function keyReleased(evt) {
             if (evt.keyCode == LEFT_KEY) {
@@ -73,33 +90,61 @@
                 downkeypressed = false;
             }
         }
-        
-            var player = new Image();
-            player.src = "images/ship 1.png";
 
+        var player = new Image();
+        player.src = "images/ship 1.png";
+
+        var enemy = new Image();
+        enemy.src = "images/aliensprite2.png";
+        
+        var gameRun = true;
+        
         function mainloop() {
-            drawImgs(space, 0, 0, canvas.width, canvas.height);
-//            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
-            //                colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red');
-            drawImgs(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE);
-            playerMove();
+            if(gameRun){
+
+                drawImgs(space, 0, 0, canvas.width, canvas.height);
+                //            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
+                //                colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red');
+                drawImgs(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE);
+                playerMove();
+                drawtext(10, 30, "score: " + score);
+                colorRect(enemyXpos, enemyYpos, ENEMY_SIZE, enemyXspeed, enemyYspeed, 'red'); //enemy
+
+                enemyMove();
+            } else {
+                colorRect(0, 0, canvas.width, canvas.height, 'black'); //be death screen 
+            }
 
 
         }
 
+        function enemyMove() {
+            enemyYpos += enemyYspeed;
+                console.log('score:' + score);
+
+            if (enemyYpos > canvas.height) {
+
+                enemyYpos = 0 - ENEMY_SIZE;
+                enemyXpos = Math.floor(Math.random() * (canvas.width - ENEMY_SIZE));
+                enemyYspeed = Math.floor(Math.random() * (12 - 4) + 4);
+            }
+            if (playerXpos + PLAYER_SIZE > enemyXpos && playerXpos < enemyXpos + ENEMY_SIZE && playerYpos + PLAYER_SIZE > enemyYpos && playerYpos < enemyYpos + ENEMY_SIZE) {
+               gameRun = false;
+            }
+        }
+
         function playerMove() {
             if (leftKeyPressed && playerXpos > 0) {
-                playerXpos -= xSpeed;
+                playerXpos -= playerXSpeed;
             }
             if (rightkeypressed && playerXpos < canvas.width - PLAYER_SIZE) {
-                playerXpos += xSpeed;
+                playerXpos += playerYSpeed;
             }
             if (upkeypressed && playerYpos > 0) {
-                playerYpos -= ySpeed;
+                playerYpos -= playerYSpeed;
             }
             if (downkeypressed && playerYpos < canvas.height - PLAYER_SIZE) {
-                console.log('me')
-                playerYpos += ySpeed;
+                playerYpos += playerYSpeed;
             }
 
         }
