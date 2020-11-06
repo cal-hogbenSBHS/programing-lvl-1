@@ -7,21 +7,40 @@
             display: block;
             margin: 10vh auto;
         }
+        
+        h1 {
+            color: black;
+        }
 
         body {
             background-color: beige;
-
+            text-align: center;
+        }
+        
+        button {
+            display: block;
+            margin: 10px auto;
+            width: 20%;
+            font-size: 20px
+            
         }
 
     </style>
 </head>
 
 <body>
+    <title>
+        space dodgers
+    </title>
+    <h1>
+        dodge the aliens homie
+    </h1>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <button onClick="location.reload();"> Respawn </button>
 
 
 
 
-    <canvas id="gameCanvas" width="1000" height="800"></canvas>
     <script>
         var canvas, canvasContext;
 
@@ -33,7 +52,7 @@
             document.addEventListener('keydown', keyPressed); //keyPressed = made function
             document.addEventListener('keyup', keyReleased); //keyReleased = made function  
 
-            setInterval(mainloop, 1000 / 50);
+            setInterval(mainloop, 1000 / 60);
 
         }
 
@@ -50,7 +69,7 @@
 
         // player vars
         var playerXpos = 480;
-        var playerYpos = 700;
+        var playerYpos = 0;
         const PLAYER_SIZE = 50;
         var playerXSpeed = 15;
         var playerYSpeed = 15;
@@ -72,7 +91,7 @@
             var enemyXpos = enemyPos * (canvas.width / 3);
             var enemyYpos = 0 - ENEMY_SIZE;
             var enemyXspeed = Math.floor(Math.random() * (4 - 2) + 2);
-            var enemyYspeed = Math.floor(Math.random() * (8 - 4) + 4);
+            var enemyYspeed = Math.floor(Math.random() * (4 - 2) + 2);
 
             var enemy = {
                 enemyXpos: enemyXpos,
@@ -167,13 +186,15 @@
                         makeEnemy();
                     }
                     startingPos = false;
+                    playerYpos = canvas.height - PLAYER_SIZE * 2;
+                    playerXpos = canvas.width / 2 - PLAYER_SIZE / 2;
                 }
                 drawEnemies();
 
             } else {
                 colorRect(0, 0, canvas.width, canvas.height, 'black');
 
-                drawtext('Game over ' + userName + ' your score was ' + score, canvas.width * 0.3, canvas.height / 2, '25px century gothic', 'red'); //be death screen 
+                drawtext('Game over ' + userName + ' your score was ' + score, canvas.width * 0.2, canvas.height / 2, '25px century gothic', 'red'); //be death screen 
             }
 
 
@@ -193,7 +214,7 @@
                 if (enemy.enemyYpos > canvas.height) {
                     enemy.enemyXpos = Math.floor(Math.random() * (canvas.width));
                     enemy.enemyYpos = 0 - enemy.ENEMY_SIZE;
-                    enemy.enemyYspeed = Math.floor(Math.random() * (12 - 4) + 4);
+                    enemy.enemyYspeed = Math.floor(Math.random() * (8 - 4) + 4);
                     score++;
                 }
             });
