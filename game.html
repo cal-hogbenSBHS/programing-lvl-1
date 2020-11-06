@@ -1,6 +1,26 @@
 <!doctype html>
+<html>
+
+<head>
+    <style>
+        canvas {
+            display: block;
+            margin: 10vh auto;
+        }
+
+        body {
+            background-color: beige;
+
+        }
+
+    </style>
+</head>
 
 <body>
+
+
+
+
     <canvas id="gameCanvas" width="1000" height="800"></canvas>
     <script>
         var canvas, canvasContext;
@@ -9,11 +29,11 @@
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
-            setInterval(mainloop, 1000 / 50);
 
             document.addEventListener('keydown', keyPressed); //keyPressed = made function
             document.addEventListener('keyup', keyReleased); //keyReleased = made function  
 
+            setInterval(mainloop, 1000 / 50);
 
         }
 
@@ -34,14 +54,14 @@
         const PLAYER_SIZE = 50;
         var playerXSpeed = 15;
         var playerYSpeed = 15;
-        
+
         // Enemy vars
-//        var enemyXpos = 0;
-//        var enemyYpos = 0;
-//        var ENEMY_SIZE = 25;
-//        var enemyColor = 'white';
-//        var enemyXspeed = 0;
-//        var enemyYspeed = 0; 
+        //        var enemyXpos = 0;
+        //        var enemyYpos = 0;
+        //        var ENEMY_SIZE = 25;
+        //        var enemyColor = 'white';
+        //        var enemyXspeed = 0;
+        //        var enemyYspeed = 0; 
 
 
         var enemies = [];
@@ -100,10 +120,10 @@
         var totalEnemies = 10;
         var enemies = []
 
-        function drawtext(x, y, text) {
-            canvasContext.font = "30px Arial";
-            canvasContext.fillStyle = "#FF0000";
-            canvasContext.fillText(text, x, y);
+        function drawtext(msg, x, y, f, c) {
+            canvasContext.font = f;
+            canvasContext.fillStyle = c;
+            canvasContext.fillText(msg, x, y);
         }
 
         function keyReleased(evt) {
@@ -137,7 +157,8 @@
                 //                colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'red');
                 drawImgs(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE);
                 playerMove();
-                drawtext(10, 30, "score: " + score);
+                drawtext("score: " + score, 30, 30, "25px Arial", 'white');
+
                 //                drawImgs(enemy, enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, ); //enemy
 
                 enemyMove();
@@ -150,14 +171,16 @@
                 drawEnemies();
 
             } else {
-                colorRect(0, 0, canvas.width, canvas.height, 'black'); //be death screen 
+                colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+                drawtext('Game over ' + userName + ' your score was ' + score, canvas.width * 0.3, canvas.height / 2, '25px century gothic', 'red'); //be death screen 
             }
 
 
         }
 
         function enemyMove() {
-            enemies.forEach(function(enemy,i,array) {
+            enemies.forEach(function(enemy, i, array) {
 
                 enemy.enemyYpos += enemy.enemyYspeed;
 
@@ -166,11 +189,12 @@
                 if (playerXpos + PLAYER_SIZE > enemy.enemyXpos && playerXpos < enemy.enemyXpos + enemy.ENEMY_SIZE && playerYpos + PLAYER_SIZE > enemy.enemyYpos && playerYpos < enemy.enemyYpos + enemy.ENEMY_SIZE) {
                     gameRun = false;
                 } // player & enemy collision
-                
-                if(enemy.enemyYpos > canvas.height){
-                  enemy.enemyXpos = Math.floor(Math.random()*(canvas.width));
+
+                if (enemy.enemyYpos > canvas.height) {
+                    enemy.enemyXpos = Math.floor(Math.random() * (canvas.width));
                     enemy.enemyYpos = 0 - enemy.ENEMY_SIZE;
                     enemy.enemyYspeed = Math.floor(Math.random() * (12 - 4) + 4);
+                    score++;
                 }
             });
         }
@@ -196,18 +220,18 @@
         }
 
         function drawEnemies() {
-            enemies.forEach(function(enemy,i,array){
-                drawImgs(enemyShip,enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_SIZE, enemy.ENEMY_SIZE);
-                
+            enemies.forEach(function(enemy, i, array) {
+                drawImgs(enemyShip, enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_SIZE, enemy.ENEMY_SIZE);
+
             });
         } // end func
 
 
-//        function moveEnemies() {
-//            enemies.forEach(function(enemy,i,array){
-//               enemy.enemyYpos += enemy.enemyYspeed;                
-//            });
-//        } // end func
+        //        function moveEnemies() {
+        //            enemies.forEach(function(enemy,i,array){
+        //               enemy.enemyYpos += enemy.enemyYspeed;                
+        //            });
+        //        } // end func
 
 
 
@@ -219,5 +243,16 @@
             canvasContext.fillRect(x, y, w, h);
         }
 
+        function colorText(msg, x, y, f, c, ) {
+            canvasContext.fillStyle = c;
+            canvasContext.font = f;
+            canvasContext.fillText(msg, x, y);
+
+
+
+        } // end of func
+
     </script>
 </body>
+
+</html>
