@@ -28,18 +28,42 @@
         space.src = 'images/space.png';
 
 
-
+        // player vars
         var playerXpos = 480;
         var playerYpos = 700;
         const PLAYER_SIZE = 50;
         var playerXSpeed = 15;
         var playerYSpeed = 15;
+        
+        // Enemy vars
+//        var enemyXpos = 0;
+//        var enemyYpos = 0;
+//        var ENEMY_SIZE = 25;
+//        var enemyColor = 'white';
+//        var enemyXspeed = 0;
+//        var enemyYspeed = 0; 
 
-        var enemyXpos = 450;
-        var enemyYpos = 200;
-        const ENEMY_SIZE = 30;
-        var enemyXspeed = 10;
-        var enemyYspeed = 10;
+
+        var enemies = [];
+
+        function makeEnemy() {
+            var enemyPos = Math.floor(Math.random() * 3) + 1;
+            const ENEMY_SIZE = 30;
+            var enemyXpos = enemyPos * (canvas.width / 3);
+            var enemyYpos = 0 - ENEMY_SIZE;
+            var enemyXspeed = Math.floor(Math.random() * (4 - 2) + 2);
+            var enemyYspeed = Math.floor(Math.random() * (8 - 4) + 4);
+
+            var enemy = {
+                enemyXpos: enemyXpos,
+                enemyYpos: enemyYpos,
+                ENEMY_SIZE: ENEMY_SIZE,
+                enemyColor: 'white',
+                enemyXspeed: enemyXspeed,
+                enemyYspeed: enemyYspeed,
+            }
+            enemies.push(enemy);
+        }
 
         const RIGHT_KEY = 39;
         var rightkeypressed = false;
@@ -52,6 +76,10 @@
 
         const DOWN_KEY = 40;
         var downkeypressed = false;
+
+        var startingPos = true;
+        var score = 0;
+
 
         function keyPressed(evt) {
             if (evt.keyCode == LEFT_KEY) {
@@ -69,6 +97,8 @@
             }
         }
         var score = 0;
+        var totalEnemies = 10;
+        var enemies = []
 
         function drawtext(x, y, text) {
             canvasContext.font = "30px Arial";
@@ -94,13 +124,13 @@
         var player = new Image();
         player.src = "images/ship 1.png";
 
-        var enemy = new Image();
-        enemy.src = "images/aliensprite2.png";
-        
+        var enemyShip = new Image();
+        enemyShip.src = "images/aliensprite2.png";
+
         var gameRun = true;
-        
+
         function mainloop() {
-            if(gameRun){
+            if (gameRun) {
 
                 drawImgs(space, 0, 0, canvas.width, canvas.height);
                 //            colorRect(playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE, 'white');
@@ -108,9 +138,17 @@
                 drawImgs(player, playerXpos, playerYpos, PLAYER_SIZE, PLAYER_SIZE);
                 playerMove();
                 drawtext(10, 30, "score: " + score);
-                drawImgs(enemy ,enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, ); //enemy
+                //                drawImgs(enemy, enemyXpos, enemyYpos, ENEMY_SIZE, ENEMY_SIZE, ); //enemy
 
                 enemyMove();
+                if (startingPos) {
+                    for (i = 0; i < totalEnemies; i++) {
+                        makeEnemy();
+                    }
+                    startingPos = false;
+                }
+                drawEnemies();
+
             } else {
                 colorRect(0, 0, canvas.width, canvas.height, 'black'); //be death screen 
             }
@@ -119,18 +157,22 @@
         }
 
         function enemyMove() {
-            enemyYpos += enemyYspeed;
-                console.log('score:' + score);
+            enemies.forEach(function(enemy,i,array) {
 
-            if (enemyYpos > canvas.height) {
+                enemy.enemyYpos += enemy.enemyYspeed;
 
-                enemyYpos = 0 - ENEMY_SIZE;
-                enemyXpos = Math.floor(Math.random() * (canvas.width - ENEMY_SIZE));
-                enemyYspeed = Math.floor(Math.random() * (12 - 4) + 4);
-            }
-            if (playerXpos + PLAYER_SIZE > enemyXpos && playerXpos < enemyXpos + ENEMY_SIZE && playerYpos + PLAYER_SIZE > enemyYpos && playerYpos < enemyYpos + ENEMY_SIZE) {
-               gameRun = false;
-            }
+                enemy.enemyYpos += enemy.enemyYspeed;
+
+                if (playerXpos + PLAYER_SIZE > enemy.enemyXpos && playerXpos < enemy.enemyXpos + enemy.ENEMY_SIZE && playerYpos + PLAYER_SIZE > enemy.enemyYpos && playerYpos < enemy.enemyYpos + enemy.ENEMY_SIZE) {
+                    gameRun = false;
+                } // player & enemy collision
+                
+                if(enemy.enemyYpos > canvas.height){
+                  enemy.enemyXpos = Math.floor(Math.random()*(canvas.width));
+                    enemy.enemyYpos = 0 - enemy.ENEMY_SIZE;
+                    enemy.enemyYspeed = Math.floor(Math.random() * (12 - 4) + 4);
+                }
+            });
         }
 
         function playerMove() {
@@ -152,6 +194,24 @@
         function drawImgs(src, x, y, w, h, ) {
             canvasContext.drawImage(src, x, y, w, h, );
         }
+
+        function drawEnemies() {
+            enemies.forEach(function(enemy,i,array){
+                drawImgs(enemyShip,enemy.enemyXpos, enemy.enemyYpos, enemy.ENEMY_SIZE, enemy.ENEMY_SIZE);
+                
+            });
+        } // end func
+
+
+//        function moveEnemies() {
+//            enemies.forEach(function(enemy,i,array){
+//               enemy.enemyYpos += enemy.enemyYspeed;                
+//            });
+//        } // end func
+
+
+
+
 
 
         function colorRect(x, y, w, h, c) {
