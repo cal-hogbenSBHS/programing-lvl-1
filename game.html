@@ -7,7 +7,7 @@
             display: block;
             margin: 10vh auto;
         }
-        
+
         h1 {
             color: black;
         }
@@ -16,13 +16,12 @@
             background-color: beige;
             text-align: center;
         }
-        
+
         button {
             display: block;
             margin: 10px auto;
             width: 20%;
             font-size: 20px
-            
         }
 
     </style>
@@ -66,6 +65,39 @@
         var space = new Image();
         space.src = 'images/space.png';
 
+        var difficulty = '';
+        var difficultypass = false;
+        while (difficultypass == false) {
+            difficulty = prompt("select the difficulty: easy, medium, hard", "easy");
+
+            difficulty = difficulty.toLowerCase()
+
+            if (difficulty == 'easy' || difficulty == 'medium' || difficulty == 'hard') {
+                difficultypass = true;
+            }
+        }
+
+
+
+        //enemy difficulties
+
+        var maxSpeed = 0;
+        var minSpeed = 0;
+
+        if (difficulty == 'easy') {
+            maxSpeed = 7;
+            minSpeed = 2;
+        }
+
+        if (difficulty == 'medium') {
+            maxSpeed = 8;
+            minSpeed = 3;
+        }
+        if (difficulty == 'hard') {
+            maxSpeed = 12;
+            minSpeed = 5;
+        }
+
 
         // player vars
         var playerXpos = 480;
@@ -74,35 +106,9 @@
         var playerXSpeed = 15;
         var playerYSpeed = 15;
 
-        // Enemy vars
-        //        var enemyXpos = 0;
-        //        var enemyYpos = 0;
-        //        var ENEMY_SIZE = 25;
-        //        var enemyColor = 'white';
-        //        var enemyXspeed = 0;
-        //        var enemyYspeed = 0; 
 
 
-        var enemies = [];
 
-        function makeEnemy() {
-            var enemyPos = Math.floor(Math.random() * 3) + 1;
-            const ENEMY_SIZE = 30;
-            var enemyXpos = enemyPos * (canvas.width / 3);
-            var enemyYpos = 0 - ENEMY_SIZE;
-            var enemyXspeed = Math.floor(Math.random() * (4 - 2) + 2);
-            var enemyYspeed = Math.floor(Math.random() * (4 - 2) + 2);
-
-            var enemy = {
-                enemyXpos: enemyXpos,
-                enemyYpos: enemyYpos,
-                ENEMY_SIZE: ENEMY_SIZE,
-                enemyColor: 'white',
-                enemyXspeed: enemyXspeed,
-                enemyYspeed: enemyYspeed,
-            }
-            enemies.push(enemy);
-        }
 
         const RIGHT_KEY = 39;
         var rightkeypressed = false;
@@ -200,12 +206,34 @@
 
         }
 
+        var enemies = [];
+
+        function makeEnemy() {
+            var enemyPos = Math.floor(Math.random() * 3) + 1;
+            const ENEMY_SIZE = 30;
+            var enemyXpos = enemyPos * (canvas.width / 3);
+            var enemyYpos = 0 - ENEMY_SIZE;
+            var enemyXspeed = Math.floor(Math.random() * (4 - 2) + 2);
+            var enemyYspeed = Math.floor(Math.random() * (maxSpeed - minSpeed) + minSpeed);
+
+            var enemy = {
+                enemyXpos: enemyXpos,
+                enemyYpos: enemyYpos,
+                ENEMY_SIZE: ENEMY_SIZE,
+                enemyColor: 'white',
+                enemyXspeed: enemyXspeed,
+                enemyYspeed: enemyYspeed,
+            }
+            enemies.push(enemy);
+        }
+
+
         function enemyMove() {
             enemies.forEach(function(enemy, i, array) {
 
                 enemy.enemyYpos += enemy.enemyYspeed;
 
-                enemy.enemyYpos += enemy.enemyYspeed;
+
 
                 if (playerXpos + PLAYER_SIZE > enemy.enemyXpos && playerXpos < enemy.enemyXpos + enemy.ENEMY_SIZE && playerYpos + PLAYER_SIZE > enemy.enemyYpos && playerYpos < enemy.enemyYpos + enemy.ENEMY_SIZE) {
                     gameRun = false;
@@ -214,7 +242,8 @@
                 if (enemy.enemyYpos > canvas.height) {
                     enemy.enemyXpos = Math.floor(Math.random() * (canvas.width));
                     enemy.enemyYpos = 0 - enemy.ENEMY_SIZE;
-                    enemy.enemyYspeed = Math.floor(Math.random() * (8 - 4) + 4);
+                    enemy.enemyYspeed = Math.floor(Math.random() * (maxSpeed - minSpeed) + minSpeed);
+                    console.log(maxSpeed + ':' + minSpeed)
                     score++;
                 }
             });
